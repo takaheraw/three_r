@@ -1,0 +1,27 @@
+name: Garbage Collection Notify
+
+on:
+  schedule:
+    # 毎日21:00 JST = 12:00 UTC
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Tokyo
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - uses: ruby/setup-ruby@dffb23f65a78bba8db45d387d5ea1bbd6be3ef18
+        with:
+          bundler-cache: true
+
+      - name: Run notify
+        env:
+          AREA_ID:        ${{ secrets.AREA_ID }}
+          GMAIL_USER:     ${{ secrets.GMAIL_USER }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+          NOTIFY_TO:      ${{ secrets.NOTIFY_TO }}
+        run: bundle exec ruby bin/notify
