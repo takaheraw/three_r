@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "dotenv/load"
+require_relative "../lib/three_r"
+
+tomorrow = Date.today + 1
+year = tomorrow.year
+month = tomorrow.month
+
+unless ThreeR::ScheduleStore.exists?(year, month)
+  puts "Calendar for #{year}/#{month} not found. Fetching..."
+  area_id = ThreeR::Config.area_id
+  entries = ThreeR::CalendarParser.fetch(area_id:, year:, month:)
+
+  case entries
+  in []
+    warn "Warning: no garbage collection data found for #{year}/#{month}"
+    exit 1
+  in [*, _]
+    ThreeR::ScheduleStore.save(year, month, entries)
+    puts "Saved #{entries.size} entries."
+  end
+end
+
+entries = ThreeR::ScheduleStore.load(year, month)
+
+case entries&.find { _1.date == tomorrow }
+in nil
+  puts "No garbage collection tomorrow (#{tomorrow})."
+in ThreeR::ScheduleEntry => entry
+  puts "Tomorrow (#{entry.date_key}): #{entry.kinds.join(", ")}"
+  ThreeR::Notifier.configure!
+  ThreeR::Notifier.send_notification(entry)
+  puts "Notification sent!"
+end

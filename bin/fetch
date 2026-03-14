@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "dotenv/load"
+require_relative "../lib/three_r"
+
+year    = (ARGV[0] || Date.today.year).to_i
+month   = (ARGV[1] || Date.today.month).to_i
+area_id = ThreeR::Config.area_id
+
+puts "Fetching calendar for #{year}/#{month} (area: #{area_id})..."
+
+schedule = ThreeR::CalendarParser.fetch(area_id:, year:, month:)
+
+case schedule
+in []
+  warn "Warning: no garbage collection data found for #{year}/#{month}"
+  exit 1
+in [*, _] => entries
+  ThreeR::ScheduleStore.save(year, month, entries)
+  puts "Saved #{entries.size} entries to out/#{format("%04d_%02d", year, month)}.json"
+end
