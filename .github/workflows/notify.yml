@@ -2,8 +2,8 @@ name: Garbage Collection Notify
 
 on:
   schedule:
-    # 毎日21:00 JST = 12:00 UTC
-    - cron: '0 12 * * *'
+    - cron: '0 20 * * *'
+      timezone: "Asia/Tokyo"
   workflow_dispatch:
 
 jobs:
