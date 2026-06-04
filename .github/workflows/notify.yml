@@ -2,7 +2,7 @@ name: Garbage Collection Notify
 
 on:
   schedule:
-    - cron: '0 20 * * *'
+    - cron: '0 19 * * *'
       timezone: "Asia/Tokyo"
   workflow_dispatch:
 
