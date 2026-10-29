@@ -6,7 +6,7 @@
 
 ### 必要環境
 
-- Ruby 4.0.1 ([mise](https://mise.jdx.dev/) で管理)
+- Ruby 4.0.9 ([mise](https://mise.jdx.dev/) で管理)
 
 ### インストール
 
@@ -73,7 +73,9 @@ bundle exec ruby bin/notify
 
 ## GitHub Actions
 
-毎日 21:00 JST に自動実行されます。手動実行も可能です。
+毎日 18:17 JST に自動実行されます（GitHub 側の都合で数時間遅れることがあります）。手動実行も可能です。
+
+通知対象は、正午より前の起動なら当日、正午以降なら翌日の収集です。
 
 ### 必要な Secrets
 

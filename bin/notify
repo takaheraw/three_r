@@ -4,9 +4,9 @@
 require "dotenv/load"
 require_relative "../lib/three_r"
 
-tomorrow = Date.today + 1
-year = tomorrow.year
-month = tomorrow.month
+target_date = ThreeR.target_date
+year = target_date.year
+month = target_date.month
 
 unless ThreeR::ScheduleStore.exists?(year, month)
   puts "Calendar for #{year}/#{month} not found. Fetching..."
@@ -25,11 +25,11 @@ end
 
 entries = ThreeR::ScheduleStore.load(year, month)
 
-case entries&.find { _1.date == tomorrow }
+case entries&.find { _1.date == target_date }
 in nil
-  puts "No garbage collection tomorrow (#{tomorrow})."
+  puts "No garbage collection on #{target_date}."
 in ThreeR::ScheduleEntry => entry
-  puts "Tomorrow (#{entry.date_key}): #{entry.kinds.join(", ")}"
+  puts "Target (#{entry.date_key}): #{entry.kinds.join(", ")}"
   ThreeR::Notifier.configure!
   ThreeR::Notifier.send_notification(entry)
   puts "Notification sent!"
