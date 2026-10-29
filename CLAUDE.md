@@ -35,6 +35,6 @@ bin/notify → lib/three_r.rb → Config (ENV)
 
 ## Ruby Style
 
-- Ruby 4.0.1、モダン構文を積極使用: `Data.define`, `filter_map`, `case/in` パターンマッチング, endless methods, Hash shorthand (`key:`), numbered block params (`_1`)
+- Ruby 4.0.9、モダン構文を積極使用: `Data.define`, `filter_map`, `case/in` パターンマッチング, endless methods, Hash shorthand (`key:`), numbered block params (`_1`)
 - 環境変数は `.env` (dotenv) で管理、`.gitignore` 済み
-- GitHub Actions (`notify.yml`) で毎日21:00 JST自動実行、Secretsで認証情報管理
+- GitHub Actions (`notify.yml`) で毎日18:17 JST自動実行（遅延で日付をまたぐため、正午前の起動は当日・以降は翌日を通知対象にする）、Secretsで認証情報管理
